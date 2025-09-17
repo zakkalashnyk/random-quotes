@@ -1,13 +1,14 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #f0f0f0;
+  background-color: #333;
+  color: #fff;
 }
 .container {
   max-width: 600px;
   margin: 50px auto;
   text-align: center;
 }
-button {
+.btn {
   padding: 10px 20px;
   font-size: 16px;
   background-color: #007bff;
@@ -16,6 +17,13 @@ button {
   cursor: pointer;
   border-radius: 10px;
 }
-button:hover {
+.btn:hover {
   background-color: #0056b3;
+}
+.quote {
+  font-style: italic;
+}
+.quote::after,
+.quote::before {
+  content: '"';
 }
