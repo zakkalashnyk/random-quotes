@@ -13,33 +13,41 @@ function generateRandomQuotes() {
   const randomQuote = quotes[currentQuoteIndex];
   quoteElement.textContent = randomQuote.quote;
   quoteAuthorElement.textContent = randomQuote.author;
-  toggleCollectionBtn.textContent = randomQuote.isFavorite
-    ? "remove from collection"
-    : "Add to collection";
+  toggleFavoriteIcon(randomQuote.isFavorite);
   toggleCollectionBtn.style.display = "inline-block";
 }
+
+function toggleFavoriteIcon(isFavorite) {
+  toggleCollectionBtn.classList.toggle("fa", isFavorite);
+  toggleCollectionBtn.classList.toggle("far", !isFavorite);
+}
+function showFavoriteCard(card) {
+  const favoriteCard = document.createElement("div");
+  favoriteCard.classList.add("favorite-card");
+  favoriteCard.innerHTML = `<p>${card.quote}<p>
+  <p class = "author">${card.author} </p>`;
+  favoritesContainer.appendChild(favoriteCard);
+}
+function hideFavoriteCard(quote) {
+  const favoriteCard = document.querySelectorAll(".favorite-card");
+  console.log(favoriteCard);
+  console.log(typeof favoriteCard);
+  favoriteCard.forEach((card) => {
+    if (card.textContent.includes(quote.quote)) {
+      card.remove();
+    }
+  });
+}
+
 function toggleFavorite() {
   const currentQuote = quotes[currentQuoteIndex];
   currentQuote.isFavorite = !currentQuote.isFavorite;
-  // console.log(currentQuote);
-  toggleCollectionBtn.textContent = currentQuote.isFavorite
-    ? "remove from collection"
-    : "Add to collection";
+  toggleFavoriteIcon(currentQuote.isFavorite);
 
   if (currentQuote.isFavorite) {
-    const favoriteCard = document.createElement("div");
-    favoriteCard.classList.add("favorite-card");
-    favoriteCard.innerHTML = `<p>${currentQuote.quote}<p>
-  <p class = "author">${currentQuote.author} </p>`;
-    favoritesContainer.appendChild(favoriteCard);
+    showFavoriteCard(currentQuote);
   } else {
-    //removes card if unfovorited
-    const favoriteCard = document.querySelectorAll(".favorite-card");
-    favoriteCard.forEach((card) => {
-      if (card.textContent.includes(currentQuote.quote)) {
-        card.remove();
-      }
-    });
+    hideFavoriteCard(currentQuote);
   }
 }
 
