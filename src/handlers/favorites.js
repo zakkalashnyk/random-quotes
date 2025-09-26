@@ -1,28 +1,29 @@
 import { currentQuote } from "../../index.js";
-const toggleBtn = document.getElementById("toggle-favorite-btn");
+const favoriteBtn = document.getElementById("favorite-btn");
 const favoritesContainer = document.getElementById("favorites-container");
 
-toggleBtn.addEventListener("click", toggleFavorite);
+favoriteBtn.addEventListener("click", () => toggleFavorite(currentQuote));
 
-hideBtn(toggleBtn);
+hideBtn(favoriteBtn);
 
-function toggleFavorite() {
-  currentQuote.isFavorite = !currentQuote.isFavorite;
-  toggleFavoriteIcon(currentQuote.isFavorite, toggleBtn);
+function toggleFavorite(quote) {
+  quote.isFavorite = !quote.isFavorite;
+  const { text, author, isFavorite } = quote;
+  toggleFavoriteBtnIcon(isFavorite, favoriteBtn);
 
-  if (currentQuote.isFavorite) {
-    showFavoriteCard(currentQuote, favoritesContainer);
+  if (isFavorite) {
+    showFavoriteCard(text, author, favoritesContainer);
   } else {
-    hideFavoriteCard(currentQuote);
+    hideFavoriteCard(quote);
   }
 }
 
 function handleFavorite(isFavorite) {
-  showBtn(toggleBtn);
-  toggleFavoriteIcon(isFavorite, toggleBtn);
+  showBtn(favoriteBtn);
+  toggleFavoriteBtnIcon(isFavorite, favoriteBtn);
 }
 
-function toggleFavoriteIcon(isFavorite, btn) {
+function toggleFavoriteBtnIcon(isFavorite, btn) {
   btn.classList.toggle("fa", isFavorite);
   btn.classList.toggle("far", !isFavorite);
 }
@@ -35,18 +36,18 @@ function hideBtn(btn) {
   btn.style.display = "none";
 }
 
-function showFavoriteCard(card, container) {
+function showFavoriteCard(text, author, container) {
   const favoriteCard = document.createElement("div");
   favoriteCard.classList.add("favorite-card");
-  favoriteCard.innerHTML = `<p>${card.quoteText}<p>
-  <p class = "author">${card.quoteAuthor} </p>`;
+  favoriteCard.innerHTML = `<p>${text}<p>
+  <p class = "author">${author} </p>`;
   container.appendChild(favoriteCard);
 }
 
 function hideFavoriteCard(quote) {
   const favoriteCard = document.querySelectorAll(".favorite-card");
   favoriteCard.forEach((card) => {
-    if (card.textContent.includes(quote.quoteText)) {
+    if (card.textContent.includes(quote.text)) {
       card.remove();
     }
   });
