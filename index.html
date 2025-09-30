@@ -17,11 +17,16 @@
   <body>
     <div class="container">
       <h1>Random quotes</h1>
-      <p id="quote" class="quote">Click the button to get a quotes</p>
-      <p id="quote-author"></p>
-      <button id="generate-btn" class="btn">Generate quote</button>
-      <!-- <i class="far fa-star star-icon"></i> -->
-      <i id="favorite-btn" class="far fa-star star-icon"></i>
+      <div id="quote" class="quote">
+        <p id="quote-text" class="quote-text">
+          Click the button to get a quotes
+        </p>
+        <p id="quote-author" class="quote-author"></p>
+        <button id="generate-btn" class="btn btn-primary">
+          Generate quote
+        </button>
+        <i id="quote-favorite-btn" class="far fa-star star-icon"></i>
+      </div>
     </div>
     <div id="favorites-container" class="favorites-container"></div>
     <script src="index.js" type="module"></script>
