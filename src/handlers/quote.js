@@ -18,10 +18,13 @@ function displayQuote(quote) {
   quoteAuthorElement.textContent = author;
   handleFavorite(isFavorite);
 }
+function findQuoteById(quotes, id) {
+  return quotes.find((quote) => quote.id === id);
+}
 
 function choseRandomQuotes(quotes) {
   const randomIndex = generateRandomInt(quotes.length);
   return quotes[randomIndex];
 }
 
-export { handleQuote };
+export { handleQuote, displayQuote, findQuoteById };
