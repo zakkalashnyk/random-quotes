@@ -4,12 +4,18 @@ import {
   findQuoteById,
 } from "./src/handlers/quote.js";
 import quotes from "./src/data/quotes.js";
-import { toggleFavorite, hideFavoriteBtn } from "./src/handlers/favorites.js";
+import {
+  toggleFavorite,
+  hideFavoriteBtn,
+  showFavoriteCard,
+} from "./src/handlers/favorites.js";
 import {
   localStorageSetItem,
   localStorageGetItem,
 } from "./src/utils/localStorage.js";
 
+const CURRENT_QUOTE_KEY = "currentQuote";
+const FAVORITE_QUOTE_KEY = "favoriteQuotes";
 let currentQuote = null;
 const favoriteQuotes = [];
 
@@ -27,22 +33,11 @@ function setCurrentQuote(quote, shouldToggleIsFavorite = false) {
         favoriteQuotes.splice(index, 1);
       }
     }
-    localStorageSetItem("favoriteQuotes", favoriteQuotes);
+    localStorageSetItem(FAVORITE_QUOTE_KEY, favoriteQuotes);
   }
   currentQuote = quote;
-  localStorageSetItem("currentQuote", currentQuote);
+  localStorageSetItem(CURRENT_QUOTE_KEY, currentQuote);
 }
-
-function init() {
-  const localStorageCurrentQuote = localStorageGetItem("currentQuote");
-  if (localStorageCurrentQuote) {
-    displayQuote(localStorageCurrentQuote);
-    const quote = findQuoteById(quotes, localStorageCurrentQuote.id);
-    quote.isFavorite = localStorageCurrentQuote.isFavorite;
-    currentQuote = quote;
-  }
-}
-window.addEventListener("load", init);
 
 const favoritesContainer = document.getElementById("favorites-container");
 const quoteFavoriteBtn = document.getElementById("quote-favorite-btn");
@@ -56,9 +51,28 @@ quoteFavoriteBtn.addEventListener("click", () =>
   )
 );
 
+function init() {
+  const localStorageCurrentQuote = localStorageGetItem(CURRENT_QUOTE_KEY);
+  if (localStorageCurrentQuote) {
+    displayQuote(localStorageCurrentQuote);
+    const quote = findQuoteById(quotes, localStorageCurrentQuote.id);
+    quote.isFavorite = localStorageCurrentQuote.isFavorite;
+    currentQuote = quote;
+  }
+
+  const localStorageFavoriteQuotes = localStorageGetItem(FAVORITE_QUOTE_KEY);
+  if (localStorageFavoriteQuotes) {
+    localStorageFavoriteQuotes.forEach((quote) => {
+      favoriteQuotes.push(quote);
+      showFavoriteCard(quote, setCurrentQuote, favoritesContainer);
+    });
+  }
+}
+window.addEventListener("load", init);
+
 const generateBtn = document.getElementById("generate-btn");
 generateBtn.addEventListener("click", () =>
-  handleQuote(quotes, setCurrentQuote)
+  handleQuote(quotes, favoriteQuotes, setCurrentQuote)
 );
 
 export { quoteFavoriteBtn };

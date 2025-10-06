@@ -1,8 +1,12 @@
 import { handleFavorite } from "./favorites.js";
 import { generateRandomInt } from "../utils/math.js";
 
-function handleQuote(quotes, setCurrentQuote) {
+function handleQuote(quotes, favoriteQuotes, setCurrentQuote) {
   const randomQuote = choseRandomQuotes(quotes);
+  // check if id of random quote among the id's of favorite quotes
+  if (favoriteQuotes.find((quote) => quote.id === randomQuote.id)) {
+    randomQuote.isFavorite = true;
+  }
   setCurrentQuote(randomQuote);
   displayQuote(randomQuote);
 }
